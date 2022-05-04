@@ -15,14 +15,14 @@ FONTHEIGHT = FONT.render("0", True, WHITE).get_height()
 
 class Entity:
 	def __init__(self, x, y):
-		self.pos = [x, y]
+		self.pos: list[int] = [x, y]
 	def draw(self, s: pygame.Surface):
 		s.set_at(self.pos, BLACK)
 
 class Ball(Entity):
 	def __init__(self, x, y):
 		self.pos = [x, y]
-		self.v = [((random.random() * 2) - 1), ((random.random() * 2) - 1)]
+		self.v = [(random.random() * 2) - 1, (random.random() * 2) - 1]
 	def draw(self, s: pygame.Surface):
 		pygame.draw.circle(s, BLACK, self.pos, 5)
 		self.pos[0] += self.v[0]
@@ -43,8 +43,7 @@ class Ball(Entity):
 		pos = [0, 0]
 		pos[0] = math.floor(self.pos[0] / CELLSIZE)
 		pos[1] = math.floor(self.pos[1] / CELLSIZE)
-		if not insideBoard(*pos):
-			print('kaboom', *pos)
+		if not insideBoard(*pos): print('kaboom', *pos)
 		if BOARD[pos[0]][pos[1]] > 0:
 			BOARD[pos[0]][pos[1]] -= 1
 			cellrect = pygame.Rect(pos[0] * CELLSIZE, pos[1] * CELLSIZE, CELLSIZE, CELLSIZE)
@@ -60,10 +59,10 @@ class Ball(Entity):
 				self.v[1] = -self.v[1] # bounce off bottom side of brick
 
 def createBall(): entities.append(Ball(random.randint(0, BOARDSIZE[0] * CELLSIZE), random.randint(0, BOARDSIZE[1] * CELLSIZE)))
-def insideBoard(x, y): return x >= 0 and x < BOARDSIZE[0] and y >= 0 and y < BOARDSIZE[1]
+def insideBoard(x: int, y: int) -> bool: return x >= 0 and x < BOARDSIZE[0] and y >= 0 and y < BOARDSIZE[1]
 
-screen = pygame.display.set_mode((500, 500))
-entities = []
+screen: pygame.Surface = pygame.display.set_mode((500, 500))
+entities: "list[Entity]" = []
 createBall()
 createBall()
 createBall()
